@@ -23,6 +23,13 @@ app.get("/", (req,res) => {
 	res.sendFile(__dirname + "/index.html");
 });
 
+app.get("/login", (req,res) => {
+	res.sendFile(__dirname + "/login.html");
+});
+
+
+/*********************** Start Registration *************************************/
+
 app.post("/addname",function(req,res) {
 	 var myData = new User(req.body);
 	 User.findOne({ email:req.body.email},function(err, resv){
@@ -43,11 +50,27 @@ app.post("/addname",function(req,res) {
 	 						res.send("Srry data is not allowed");
 					}
         	});
-
-
-
-
 });
+
+/*********************** End Registration *************************************/
+
+	app.post("/demo", function(req,res) {
+		User.findOne({ email:req.body.email},function(err, vals) {
+            		 if(vals == null){							
+							 		res.end("Invalid Logins");							
+            		 }
+            		 else if( vals.email == req.body.email && vals.password == req.body.password){
+	 						res.send("Welcome to login Page")
+
+	 				}else{
+	 						res.send("Srry data is not allowed");
+					}						
+		});
+	});
+
+
+
+
 
 
 app.listen(port, () => {
