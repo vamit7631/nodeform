@@ -3,13 +3,12 @@ var mongoose = require('mongoose');
 var app = express();
 var port = 3000;
 var bodyParser = require('body-parser');
-var mongoDB = "mongodb://localhost:27017/vinavdb";
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.Promise = global.Promise;
-mongoose.connect(mongoDB);
+mongoose.connect("mongodb://localhost:27017/vinavdb");
 
 var nameSchema = new mongoose.Schema({
 	firstname : String,
@@ -23,30 +22,15 @@ app.get("/", (req,res) => {
 	res.sendFile(__dirname + "/index.html");
 });
 
-app.post("/addname",function(req,res) {
+app.post("/addname",(req,res) => {
 	 var myData = new User(req.body);
-	 User.findOne({ email:req.body.email},function(err, resv){
-            		 if(resv == null){
-            		 	 myData.save()
-							 .then(item => {
-							 		res.send("Name saved to database")
-							 })
-							 .catch(err => {
-							 	 	res.status(400).send("Unable to save to database");
-							 });
-							 res.send("ThankYou For your Registration")
-            		 }
-            		 else if( resv.email == req.body.email){
-	 						res.send("Email is already registered")
-
-	 				}else{
-	 						res.send("Srry data is not allowed");
-					}
-        	});
-
-
-
-
+	 myData.save()
+	 .then(item => {
+	 		res.send("Name saved to database")
+	 })
+	 .catch(err => {
+	 	 	res.status(400).send("Unable to save to database");
+	 });
 });
 
 
