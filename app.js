@@ -1,6 +1,7 @@
 var express = require('express');
 var session = require('express-session');
 var mongoose = require('mongoose');
+var path = require('path');
 var app = express();
 var port = 3000;
 var bodyParser = require('body-parser');
@@ -17,6 +18,10 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/assets'));
+app.set('views', path.join(__dirname,'admin'));
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 
 var sess;
 
@@ -88,7 +93,7 @@ app.route('/admin')
     .get(function(req, res, next) {
     	 sess = req.session;
      if (sess.email) {  
-         	 res.sendFile(__dirname + "/admin/index.html");
+         	 res.render("index");
         }else{
         	res.write('<h1>Please login first.</h1>');
        }
