@@ -1,9 +1,12 @@
 var express = require('express');
 var session = require('express-session');
 var mongoose = require('mongoose');
+var path = require('path');
 var app = express();
+//var userRepository = require('./userRepository.js');
 var port = 3000;
 var bodyParser = require('body-parser');
+var nodemailer = require('nodemailer');
 var mongoDB = "mongodb://localhost:27017/vinavdb";
 
 app.set('trust proxy', 1);
@@ -16,6 +19,24 @@ app.use(session({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/assets'));
+app.set('views', path.join(__dirname,'admin'));
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  secure: true,
+  port: '465',
+  auth: {
+    user: 'vamit7631@gmail.com',
+    pass: 'mugdhach'
+  }
+});
+
+
 
 var sess;
 
@@ -48,6 +69,18 @@ app.get("/login", (req,res) => {
 		res.sendFile(__dirname + "/login.html");
 	}
 });
+
+app.get("/register",(req,res) => {
+	sess = req.session;
+	if(sess.email){
+		res.redirect("/admin");
+	}else{
+		res.sendFile(__dirname + "/register.html");
+	}	
+});
+
+
+
 app.post("/addname",function(req,res) {
 	 var myData = new User(req.body);
 	 User.findOne({ email:req.body.email},function(err, resv){
@@ -83,13 +116,37 @@ app.post("/addname",function(req,res) {
 		});
 	});
 
+
+
+app.post("/sendmail",function(req,res) {
+	console.log(req.body);
+var mailOptions = {
+  from: 'vamit7631@gmail.com',
+  to: 'vamit76@yahoo.in',
+  subject: 'Sending Email using Node.js',
+  html: "<strong>Firstname :</strong> " + req.body.firstname + "<br/><strong>Lastname :</strong> " + req.body.lastname + "<br/><strong>Email :</strong> " + req.body.emailval + "<br/><strong>Message :</strong> " + req.body.textareaval
+}
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ');
+    res.redirect('/');
+  }
+});
+
+});
+
+
+
 app.route('/admin')
     .get(function(req, res, next) {
     	 sess = req.session;
      if (sess.email) {  
-         	 res.sendFile(__dirname + "/admin/index.html");
+         	 res.render("index");
         }else{
-        	res.write('<h1>Please login first.</h1>');
+        	  res.redirect('/');
        }
     })
 

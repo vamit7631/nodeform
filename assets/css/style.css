@@ -1,0 +1,31 @@
+  	
+ @import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Tangerine');
+ a{ text-decoration: none !important;}
+ .padding100{ padding-top:100px; }
+ #home-top-wrapper {background-image: linear-gradient(#f57a8f, #e2ab96);}
+.nav-inline{ text-align: center;width: 100%; padding: 0px;}
+.nav-inline li{ display: inline-block;padding: 10px 50px; font-size: 25px;}
+.nav-inline li a{ color: #fff; text-decoration:none;}
+.nav-inline-right {text-align: right;width: auto; padding: 0px; top: 10px; position: absolute; right: 5%; }
+.nav-inline-right li{ display: inline-block;padding: 0px 10px; font-size: 15px;}
+.nav-inline-right li a{ color: #fff; text-decoration:none;}
+.home-top-header h1{text-align:center;padding: 20px;color: #fff;margin-top: 200px;font-family: 'Tangerine', cursive; font-size:5em;line-height: 85px;}
+.get-started-btn{ text-align: center;font-family: 'Raleway', sans-serif; padding: 20px 0 150px 0;}
+.get-started-btn span { padding: 15px 30px; background-color: #fff; color: #f57a8f; border: 1px solid #fff;
+    font-size: 25px; border-radius: 10px;}
+
+.get-started-btn1{ text-align: center;font-family: 'Raleway', sans-serif; padding: 40px 0 150px 0;}
+.get-started-btn1 span { padding: 15px 30px; background-color: #fff; color: #5f5d5d; border: 1px solid #ccc;
+    font-size: 22px; border-radius: 10px;}
+
+
+#home-top-wrapper2 h1{ text-align: center;font-family: 'Open Sans', sans-serif; color: #5f5d5d; margin-top: 30px;
+    font-size: 2.3em; padding: 20px;} 
+.content-wrap1{ text-align: center;font-family: 'Open Sans', sans-serif;color: #5f5d5d;padding: 20px;}  
+#home-top-wrapper3{ background-color: #eff0f4;} 
+#home-top-wrapper3 h2{text-align: center; width: 100%;font-family: 'Open Sans', sans-serif;color: #575966; padding-top: 10%;}
+#home-top-wrapper3 h3{text-align: center; width: 100%;font-family: 'Raleway', sans-serif;color: #f57a8f; padding-top: 25px; padding: 15px;}
+.height55{ height: 55px;}
+.marginb30{ margin-bottom:30px; }
+.submtbtn{ border: 1px solid #ccc;color: #575966; background-color: #eff0f4;padding: 10px 30px;margin-left: 15px;font-size: 20px;    border-radius: 5px;margin-bottom: 50px; cursor: pointer;}
+
