@@ -115,3 +115,34 @@
  -->
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+db.getCollection('rfxvendors').aggregate([{
+        $match: {
+            "vendorList.vendorNo": "0000108205"
+        }
+    },{$lookup: { from: "rfxheaders",localField: "rfqNo" ,foreignField:"_id",as: "rfxtestDetails"}},
+    {$unwind:"$rfxtestDetails"},
+    {$lookup:{
+       from: "rfxheaderquotes",
+       let: { bodyVendor: "0000108205"},
+       pipeline: [ {$match:{$expr:{$eq:["$vendorNo","$$bodyVendor"]}}},{$group:{_id:null,rfqNo:{$push:"$rfqNo"}}}],
+       as: "rfqHeadersQuotes"
+     }},
+     {$unwind:"$rfqHeadersQuotes"},
+     {$project:{rfxtestDetails:1,rfqNo:"$rfqHeadersQuotes.rfqNo"}},
+     {$match:{"rfxtestDetails._id":{$nin: "$rfqNo"}}}
+     
+    ])
