@@ -84,7 +84,8 @@ module.exports.uploadExcel = async (req) => {
     let rowresult = 11;
     let countresult = count / 3;
     let snodetail;
-    let objData = {};
+    let resultset = [];
+    let objData = [];
     let counttest = 0;
     let snoval;
     let uv;
@@ -97,35 +98,34 @@ module.exports.uploadExcel = async (req) => {
         let currencychk1 = sh.getCell('I' + (rowresult + 1)).value
         let incoterm3 = sh.getCell('I' + (rowresult + 2)).value
         uv = rowresult + 5;
-     //   console.log(countresult, 'ddddddddddddddddddddddddddddddddddddd')
+    //    console.log(countresult, 'ddddddddddddddddddddddddddddddddddddd')
         for (uv; uv <= sh.rowCount; uv++) {
             snodetail = sh.getRow(uv).getCell(2).value
             if (snodetail == null) {
                 break;
             } else {
                 console.log(uv, 'ssssssssssssssssssssssssssssssssssssssssss')
-      
-                snodetail = sh.getRow(uv).values;
-                counttest++;
-                snoval = snodetail[3];
-                //  console.log(snodetail)
-                // if (arrCol.indexOf(snoval) === -1) {
-                //     arrCol.push(snoval);
-                   
-
-
-                // }
+                 snodetail = sh.getRow(uv).values;
+                // counttest++;
+                 snoval = snodetail[3];
+                 console.log(snoval,'fffffffffffffff')
+            //     resultset.push(uv)
+               //   console.log(snoval)
+                //   objData.push({...snodetail})
+                //   console.log(objData)
+                 if (arrCol.indexOf(snoval) === -1) {
+                     arrCol.push(snoval);
+                      console.log(arrCol)
+                 }
 
             }
 
         }
 
+      
         rowresult = rowresult + 10;
 
     }
-
-
-
 
 
 
@@ -155,7 +155,6 @@ module.exports.uploadExcel = async (req) => {
     return arrData;
 
 }
-
 
 
 
