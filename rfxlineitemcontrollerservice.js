@@ -14,7 +14,11 @@ module.exports.uploadExcel = async (req, res) => {
 <!------------------------------  service ----------------------------->
 
 
-module.exports.uploadExcel = async (req, enumData) => {
+let Excel = require('exceljs');
+let wb = new Excel.Workbook();
+let fs = require('fs')
+
+module.exports.uploadExcel = async (req) => {
     let obj = {};
     let arrData = [];
     await req.files.sampleFile.mv('./sampleFile.xlsx');
@@ -40,7 +44,8 @@ module.exports.uploadExcel = async (req, enumData) => {
         { key: 'cgst' },
         { key: 'sgst' },
         { key: 'igst' },
-        { key: 'companyName' }
+        { key: 'companyName' },
+        { key: 'rilSiteName' }
     ]
     let rfqNo = sh.getCell('B1').value
     rfqNo = rfqNo.replace(/^\D+/g, '');
@@ -64,8 +69,6 @@ module.exports.uploadExcel = async (req, enumData) => {
     let cell14 = sh.getCell('J7').value
     let cell15 = sh.getCell('J8').value
 
-
-
     // console.log(sh.rowCount, 'rowcount')
     // console.log(sh.actualColumnCount, 'columncount')
     let count = 0;
@@ -78,45 +81,51 @@ module.exports.uploadExcel = async (req, enumData) => {
 
 
 
-
-
-
     let rowresult = 11;
     let countresult = count / 3;
+    let snodetail;
+    let objData = {};
+    let counttest = 0;
+    let snoval;
+    let uv;
+    let arrDataList = [];
     for (let j = 1; j <= countresult; j++) {
-         companyName = sh.getCell('B' + rowresult).value
-        let rilSiteName = sh.getCell('D' + rowresult).value
+        companyName = sh.getCell('B' + rowresult).value
+        rilSiteName = sh.getCell('D' + rowresult).value
         let packagingcharges = sh.getCell('G' + (rowresult + 1)).value
         let freightcharges = sh.getCell('G' + (rowresult + 2)).value
         let currencychk1 = sh.getCell('I' + (rowresult + 1)).value
-        let incoterm3 = sh.getCell('I' + (rowresult + 2)).value 
-
+        let incoterm3 = sh.getCell('I' + (rowresult + 2)).value
+        uv = rowresult + 5;
+     //   console.log(countresult, 'ddddddddddddddddddddddddddddddddddddd')
+        for (uv; uv <= sh.rowCount; uv++) {
+            snodetail = sh.getRow(uv).getCell(2).value
+            if (snodetail == null) {
+                break;
+            } else {
+                console.log(uv, 'ssssssssssssssssssssssssssssssssssssssssss')
       
+                snodetail = sh.getRow(uv).values;
+                counttest++;
+                snoval = snodetail[3];
+                //  console.log(snodetail)
+                // if (arrCol.indexOf(snoval) === -1) {
+                //     arrCol.push(snoval);
+                   
+
+
+                // }
+
+            }
+
+        }
+
         rowresult = rowresult + 10;
-      
+
     }
 
 
 
-
-    
-    let snodetail;
-    let counttest = 0;
-    for (let uv = 16; uv <= sh.rowCount; uv++) {
-        snodetail = sh.getRow(uv).getCell(2).value
-        if (snodetail != null) {
-            counttest++;
-            let contestdata = sh.getRow(uv).values;
-            console.log(snodetail, 'snodetails')     
-            console.log(contestdata)
-        }
-        else {
-            break;
-        }
-       
-    }
-
-    console.log(counttest, 'counttest')
 
 
 
@@ -139,19 +148,13 @@ module.exports.uploadExcel = async (req, enumData) => {
         cgst: cell13,
         sgst: cell14,
         igst: cell15,
-        companyName:companyName
+        //   companyName:companyName,
+        rilSiteName: rilSiteName
     }];
 
     return arrData;
 
 }
-
-
-
-
-
-
-
 
 
 
