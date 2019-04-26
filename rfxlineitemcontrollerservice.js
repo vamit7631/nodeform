@@ -18,7 +18,8 @@ let Excel = require('exceljs');
 let wb = new Excel.Workbook();
 let fs = require('fs')
 
-module.exports.uploadExcel = async (req) => {
+
+module.exports.uploadExcel = async (req, enumData) => {
     let obj = {};
     let arrData = [];
     await req.files.sampleFile.mv('./sampleFile.xlsx');
@@ -45,7 +46,11 @@ module.exports.uploadExcel = async (req) => {
         { key: 'sgst' },
         { key: 'igst' },
         { key: 'companyName' },
-        { key: 'rilSiteName' }
+        { key: 'rilSiteName' },
+        { key: 'rfxlineitem' },
+        { key: 'rfxlineitemDesc' },
+        { key: 'vomcode' },
+        { key: 'rilDileveryDate' }
     ]
     let rfqNo = sh.getCell('B1').value
     rfqNo = rfqNo.replace(/^\D+/g, '');
@@ -98,7 +103,8 @@ module.exports.uploadExcel = async (req) => {
         let currencychk1 = sh.getCell('I' + (rowresult + 1)).value
         let incoterm3 = sh.getCell('I' + (rowresult + 2)).value
         uv = rowresult + 5;
-    //    console.log(countresult, 'ddddddddddddddddddddddddddddddddddddd')
+        console.log(companyName)
+        console.log(countresult, 'ddddddddddddddddddddddddddddddddddddd')
         for (uv; uv <= sh.rowCount; uv++) {
             snodetail = sh.getRow(uv).getCell(2).value
             if (snodetail == null) {
@@ -107,16 +113,19 @@ module.exports.uploadExcel = async (req) => {
                 console.log(uv, 'ssssssssssssssssssssssssssssssssssssssssss')
                  snodetail = sh.getRow(uv).values;
                 // counttest++;
-                 snoval = snodetail[3];
-                 console.log(snoval,'fffffffffffffff')
+           //      snoval = snodetail[3];
+           //      console.log(snoval,'fffffffffffffff')
             //     resultset.push(uv)
                //   console.log(snoval)
-                //   objData.push({...snodetail})
-                //   console.log(objData)
-                 if (arrCol.indexOf(snoval) === -1) {
-                     arrCol.push(snoval);
-                      console.log(arrCol)
-                 }
+                   objData.push({rfqNo,...snodetail,companyName,rilSiteName})
+                   
+
+                
+              
+                //  if (arrCol.indexOf(snoval) === -1) {
+                //      arrCol.push(snoval);
+                    
+                //  }
 
             }
 
@@ -127,7 +136,17 @@ module.exports.uploadExcel = async (req) => {
 
     }
 
-
+    console.log(objData)
+    // let rfxlineItem;
+    // let rfxlineitemDesc;
+    // let vomcode;
+    // let rilDileveryDate;
+    // for(resultDataSet of objData){
+    //     rfxlineItem = resultDataSet[3]
+    //     rfxlineitemDesc = resultDataSet[4]
+    //     vomcode = resultDataSet[5]
+    //     rilDileveryDate = resultDataSet[6]
+    // }
 
     arrData = [{
         rfqNo: rfqNo,
@@ -148,16 +167,17 @@ module.exports.uploadExcel = async (req) => {
         cgst: cell13,
         sgst: cell14,
         igst: cell15,
-        //   companyName:companyName,
-        rilSiteName: rilSiteName
+        companyName:companyName,
+        rilSiteName: rilSiteName,
+        // rfxlineitem :  rfxlineItem,
+        // rfxlineitemDesc : rfxlineitemDesc,
+        // vomcode : vomcode,
+        // rilDileveryDate : rilDileveryDate
     }];
 
     return arrData;
 
 }
-
-
-
 
 
 
